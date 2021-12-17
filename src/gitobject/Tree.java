@@ -71,7 +71,7 @@ public class Tree extends GitObject{
                 setValue(getValue()+"040000 tree " + tree.getKey() + "\t" + pair.getKey() + "\n");
             }else {
                 System.out.println("这里"+pair.getValue().blobKey);
-                Blob blob = new Blob(pair.getValue().blobKey,1);
+                Blob blob = new Blob(pair.getValue().blobKey);
                 treeList.add(blob);
                 //不需要compresseWrite，因为在git add之后，即生成index时，已经对所有文件进行了compresseWrite压缩写入！
                 setValue(getValue()+"100644 blob " + blob.getKey() + "\t" + pair.getKey() + "\n");

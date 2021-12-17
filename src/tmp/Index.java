@@ -2,13 +2,10 @@ package tmp;
 
 import utils.*;
 import gitobject.Blob;
-import repo.Repository;
 import utils.Utils;
-
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Date;
-//import java.util.LinkedList;
+
 
 public class Index {
 	//ArrayList中的每一项表示一个记录集，描述一个文件的相关信息，例如：
@@ -20,6 +17,7 @@ public class Index {
 	
     //如果index文件存在，读取index文件中的数据项，如果index文件不存在，创建index文件
 	public Index() throws IOException {
+		System.out.println(path);
 		if(!new File(path + File.separator + "index").exists()) {
 			//System.out.println("错误附近的path"+path);
 			//在.jit文件夹内，创建名为index的文件
@@ -87,11 +85,7 @@ public class Index {
 		}
 	}
 	
-	/**
-	 * Insert a file record into indexList.
-	 * @param file
-	 * @throws Exception
-	 */
+	//添加一条记录到index文件中
 	public void addIndexs(File file) throws Exception {
 		//Generate a new record
 		String[] items = new String[4];
@@ -99,10 +93,8 @@ public class Index {
 		//String workDir = Repository.getWorkTree();
 		String workDir = Utils.getWorkDir();
 		String fileName = file.getPath().substring(workDir.length() + 1);
-		
-
 		String timeStr = String.valueOf(file.lastModified());
-		//100644 6b1c46cd9dcf9950099986ba03e5bfa77ffc3a6c <timestmp>  sq/ss.txt
+		//100644 6b1c46cd9dcf9950099986ba03e5bfa77ffc3a6c sq/ss.txt <timestmp>
 		items[0] = "10644";
 		items[1] = blob.getKey();
 			//System.out.println(blob.getKey());
@@ -114,7 +106,7 @@ public class Index {
 		blob.compressWrite();
 	}	
 	
-    //
+    //查找文件是否存在于index的记录里，若存在，返回记录的下标，若不存在，返回-1
 	public int inIndex(File file) {
 		String filePath = file.getPath().substring(Utils.getWorkDir().length() + 1);
 		for(int i = 0; i < index.size(); i++) {
@@ -125,10 +117,7 @@ public class Index {
 		return -1;
 	}
 	
-	/**
-	 * Remove a file record from the index
-	 * @param file
-	 */
+	//从index中删除file所在的那个条目
 	public void deleteItem(File file) {
 		int idx = inIndex(file);
 		if(idx != -1) {
@@ -136,10 +125,7 @@ public class Index {
 		}
 	}
 
-
-	/**
-	 * Clear the stage.
-	 */
+	//删除index中的所有记录
 	public void clear() {
 		File file = new File(path + File.separator + "index");
 		FileDeletion.deleteContent(file);

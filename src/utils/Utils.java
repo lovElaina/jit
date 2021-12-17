@@ -4,6 +4,7 @@ package utils;
 import repo.Repository;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class Utils {
 
@@ -81,5 +82,38 @@ public class Utils {
         }
         return new String(bytes);
     }
+
+    /**
+     * 将字符串追加到文件已有内容后面
+     *
+     * @param fileFullPath 文件完整地址：D:/test.txt
+     * @param content 需要写入的
+     */
+    public static void writeFile(String fileFullPath,String content) {
+        FileOutputStream fos = null;
+        try {
+            //true不覆盖已有内容
+            fos = new FileOutputStream(fileFullPath, true);
+            //写入
+            fos.write(content.getBytes());
+            // 写入一个换行
+            fos.write("\r\n".getBytes());
+            fos.write("----------------------------------------------------------------".getBytes(StandardCharsets.UTF_8));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally{
+            if(fos != null){
+                try {
+                    fos.flush();
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
     public static final String SEP ="\\\\";
 }

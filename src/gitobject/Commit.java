@@ -1,14 +1,12 @@
 package gitobject;
 
 import repo.Repository;
+import utils.FileReader;
 import utils.SHA1;
 import utils.*;
 import utils.ZLibUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class Commit extends GitObject{
     private String sha_tree; 		// the sha1 value of present committed tree
@@ -113,9 +111,18 @@ public class Commit extends GitObject{
         setKey(genKey());
         if(isValidCommit()) {
             compressWrite();
+            compressWriteHistory();
         }
     }
-    
+
+    private void compressWriteHistory() throws IOException {
+        /*byte[] data = ZLibUtils.compress(getValue().getBytes());
+        FileOutputStream fos = new FileOutputStream(Utils.getWorkDir() + File.separator + getKey());
+        fos.write(data);
+        fos.close();*/
+        Utils.writeFile(Utils.getWorkDir()+File.separator+".jit"+File.separator+"LOG",getValue());
+    }
+
 
     /**
      * Generate the hash value of this commit.

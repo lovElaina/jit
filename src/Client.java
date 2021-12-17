@@ -83,12 +83,49 @@ public class Client {
 					"jit commit: Commit file(s) from stage to repository.");
 		}
 	}
+
+	/**
+	 * Command 'jit remove'. Remove file record(s) from stage.
+	 * @param args
+	 */
+	public static void jitRemove(String[] args) throws IOException {
+		//String workDir = Repository.getWorkTree();
+		Utils.setWorkDir(new File(".").getCanonicalPath());
+		String workDir = Utils.getWorkDir();
+
+		if(args.length <= 2 || args[2].equals("-help")) {
+			System.out.println("""
+					usage: jit remove <file1> [<file2>...] [-help]\r
+					\r
+					jit remove <file1> [<file2>...]: Remove file(s) from stage.""");
+		} else {
+			for(int i = 2; i < args.length; i++) {
+				String fileName = args[i];
+				File file = new File(workDir + File.separator + fileName);
+				try {
+					JitRemove.remove(file);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public static void jitLog(String[] args) throws Exception {
+		Utils.setWorkDir(new File(".").getCanonicalPath());
+		String workDir = Utils.getWorkDir();
+		if(args.length <= 2 || args[2].equals("-help")) {
+			System.out.println("usage:jit log");
+		} else {
+			JitLog.printLog();
+		}
+	}
 	
 
 	/**
 	 * Command 'jit help'.
 	 */
-	public static void jitHelp() {
+	public static void jitHelp(){
 		System.out.println("usage: jit [--version] [--help] [-C <path>] [-c name=value]\r\n" +
 				"           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\r\n" +
 				"           [-p | --paginate | --no-pager] [--no-replace-objects] [--bare]\r\n" +
@@ -128,8 +165,12 @@ public class Client {
 			String str = scanner.nextLine();
 			String[] arr = str.split("\\s+");
 
+			if(arr[0].equals("stop")){
+				System.out.println("成功停止程序");
+				break;
+			}
 			if (arr.length <= 1 || arr[1].equals("help")) {
-				//jitHelp();
+				jitHelp();
 				System.out.println(arr.length);
 			} else {
 				if (arr[1].equals("init")) {
@@ -138,6 +179,10 @@ public class Client {
 					jitAdd(arr);
 				} else if (arr[1].equals("commit")) {
 					jitCommit(arr);
+				} else if (arr[1].equals("remove")) {
+					jitRemove(arr);
+				} else if (arr[1].equals("log")){
+					jitLog(arr);
 				} else {
 					System.out.println("jit: " + arr[1] + "is not a git command. See 'git help'.");
 				}

@@ -68,8 +68,6 @@ public abstract class GitObject {
 
     public void compressWrite() throws Exception{
         byte[] data = ZLibUtils.compress(value.getBytes());
-        System.out.println("path是"+path);
-        System.out.println("key是"+key);
         FileOutputStream fos = new FileOutputStream(path + File.separator + key);
         fos.write(data);
         fos.close();
