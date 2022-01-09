@@ -43,15 +43,14 @@ public class Blob extends GitObject {
         setNum("100644");
         //mode = "100644";
         try{
-            //System.out.println(getPath() + File.separator + key+"gggggggggggggggggggggggggggg");
             File file = new File(getPath() + File.separator + key);
-            //System.out.println(getPath() + File.separator + key+"lkkkkkkkkkkkkkkkkkkkkkkk");
             if(file.exists()){
                 setKey(key);
                 //key = Id;
                 FileInputStream is = new FileInputStream(file);
                 byte[] output = ZLibUtils.decompress(is);
                 setValue(new String(output));
+                is.close();
                 //value = new String(output);
             }
             else{

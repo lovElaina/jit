@@ -20,7 +20,7 @@ public class Repository {
      */
     public Repository() throws IOException {
         if(gitDir == ""){
-            throw new IOException("The repository does not exist!");
+            throw new IOException("The repository does not branchExist!");
         }
     }
     

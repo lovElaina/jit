@@ -15,11 +15,11 @@ public class JitAdd {
     	if(file.isFile()){
     		//表示已经在index类找到了同名的记录
 			if(idx.inIndex(file) != (-1)) {
-				System.out.println("找到了同名记录，现在我们更新吧");
+				System.out.println("找到了同名记录，更新");
 				idx.deleteItem(file);
 			}
 			idx.addIndexs(file);
-			idx.outputIndex();
+			idx.saveIndex();
 		}
     	else if(file.isDirectory()){
 			File[] fs = file.listFiles();

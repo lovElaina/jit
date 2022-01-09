@@ -1,9 +1,13 @@
 package core;
 
+import branch.Branch;
 import utils.FileDeletion;
 import repo.Repository;
+import utils.Utils;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class JitInit {
 	/**
@@ -14,16 +18,15 @@ public class JitInit {
     public static void init(String workTree) throws IOException {
         Repository repo = new Repository(workTree);
         if(!repo.exist()){
-/*            if(repo.isDirectory()){
-                FileDeletion.deleteFile(Repository.getGitDir());
-            }
-            else if(repo.isFile()){
-                throw new IOException(".jit is a file, please check");
-            }*/
-            System.out.println(".jit仓库不存在，现在建立");
+            System.out.println("Jit仓库不存在，现在建立");
             repo.createRepo();
         }
-
-        System.out.println("Jit repository has been initiated successfully.");
+        System.out.println("Jit仓库已经存在了.");
+        //这里建立master分支文件
+        File file = new File(Utils.getJitDir() + File.separator + "refs" + File.separator + "heads");
+        if(Objects.requireNonNull(file.list()).length == 0) {
+            Branch master = new Branch("master", "null");
+            master.addBranch();
+        }
     }
 }

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="jit-ex:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/jit_ex_jar</output-path>
+    <root id="archive" name="jit-ex.jar">
+      <element id="module-output" name="jit-ex" />
+    </root>
+  </artifact>
+</component>

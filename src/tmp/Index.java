@@ -17,7 +17,7 @@ public class Index {
 	
     //如果index文件存在，读取index文件中的数据项，如果index文件不存在，创建index文件
 	public Index() throws IOException {
-		System.out.println(path);
+		//System.out.println(path);
 		if(!new File(path + File.separator + "index").exists()) {
 			//System.out.println("错误附近的path"+path);
 			//在.jit文件夹内，创建名为index的文件
@@ -25,7 +25,7 @@ public class Index {
 		}else {
 			//即表示已经存在，加载已经存在的index文件
 
-			index = getExistData();
+			index = getObjFromIndex();
 		}	
 	}
 	//get方法，返回创建完成的index对象
@@ -34,7 +34,7 @@ public class Index {
 	}
 	
 	//反序列化，将index文件中的每条数据读入ArrayList中。
-	public ArrayList<String[]> getExistData() throws IOException {
+	public ArrayList<String[]> getObjFromIndex() throws IOException {
 		if(new File(path + File.separator + "index").exists()) {
 			File indexFile = new File(path + File.separator + "index");
 			FileInputStream is = new FileInputStream(indexFile);
@@ -68,7 +68,7 @@ public class Index {
 	}
 	
 	//按照一行一行的形式保存index信息到.jit/index
-	public void outputIndex() throws IOException {
+	public void saveIndex() throws IOException {
 		if(new File(path + File.separator + "index").exists()) {
 			File indexFile = new File(path + File.separator + "index");
 	        FileWriter fw = new FileWriter(indexFile);
@@ -122,6 +122,8 @@ public class Index {
 		int idx = inIndex(file);
 		if(idx != -1) {
 			index.remove(idx);
+		}else {
+			System.out.println("想要移除的文件不存在，请先检查");
 		}
 	}
 

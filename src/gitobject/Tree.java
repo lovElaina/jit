@@ -1,9 +1,14 @@
 package gitobject;
 
 import tmp.ObjectNode;
+import utils.FileReader;
 import utils.SHA1;
 import utils.Utils;
+import utils.ZLibUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,7 +60,47 @@ public class Tree extends GitObject{
         compressWrite();
     }
 
+    public Tree(String key) throws IOException {
+        setTreeList(new ArrayList<>());
+        setType("tree");
+        setNum("040000");
+        try{
+            File file = new File(Utils.getObjectsPath() + File.separator + key);
+            if(file.exists()){
+                setKey(key);
+                //key = Id;
+                FileInputStream is = new FileInputStream(file);
+                byte[] output = ZLibUtils.decompress(is);
+                is.close();
+                setValue(new String(output));
+                genTreeList();
+            }
+            else{
+                throw new IOException();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
+    }
+
+    /**
+     * Generate treelist from the value of an existed tree object.
+     * @throws IOException
+     */
+    public void genTreeList() throws IOException {
+        ArrayList<String> list = FileReader.readByBufferReader(getValue());
+        for(int i = 0; i < list.size(); i++){
+            if(FileReader.readObjectFmt(list.get(i)).equals("blob")){
+                Blob blob = new Blob(FileReader.readObjectKey(list.get(i)));
+                treeList.add(blob);
+            }
+            else{
+                Tree tree = new Tree(FileReader.readObjectKey(list.get(i)));
+                treeList.add(tree);
+            }
+        }
+    }
     /**
      * Generate the key of a tree object from index.
      * @param indexTree
@@ -70,7 +115,7 @@ public class Tree extends GitObject{
                 tree.compressWrite();
                 setValue(getValue()+"040000 tree " + tree.getKey() + "\t" + pair.getKey() + "\n");
             }else {
-                System.out.println("这里"+pair.getValue().blobKey);
+                //System.out.println("这里"+pair.getValue().blobKey);
                 Blob blob = new Blob(pair.getValue().blobKey);
                 treeList.add(blob);
                 //不需要compresseWrite，因为在git add之后，即生成index时，已经对所有文件进行了compresseWrite压缩写入！

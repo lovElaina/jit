@@ -19,10 +19,12 @@ public class Utils {
     public static void setWorkDir(String workDir) {
         Utils.workDir = workDir;
     }
+
     //获取工作路径，即包含.jit的文件夹
     public static String getWorkDir() {
         return workDir;
     }
+
     //获取.jit所在的路径
     public static String getJitDir() {
         return workDir + File.separator + ".jit";
@@ -60,6 +62,7 @@ public class Utils {
             FileInputStream fileInputStream = new FileInputStream(file);
             bytes = new byte[fileInputStream.available()];
             fileInputStream.read(bytes);
+            fileInputStream.close();
         }catch (FileNotFoundException e){
             System.out.println("文件没有找到1");
         }

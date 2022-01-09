@@ -15,8 +15,7 @@ public class FileStatus {
      * @throws FileNotFoundException
      */
     public static boolean branchExist(String branchname)throws FileNotFoundException {
-        /*File branch = new File(Repository.getGitDir() + File.separator + "refs"
-                + File.separator + "heads" + File.separator + branchname);*/
+
         File branch = new File(Utils.getJitDir() + File.separator + "refs"
                 + File.separator + "heads" + File.separator + branchname);
         return branch.isFile();

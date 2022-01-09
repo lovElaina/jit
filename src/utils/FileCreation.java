@@ -19,7 +19,7 @@ public class FileCreation {
 	 */
     public static void createFile(String parentPath, String filename, String text) throws IOException {
         if(!new File(parentPath).isDirectory()){
-            throw new IOException("The path doesn't exist!");
+            throw new IOException("The path doesn't branchExist!");
         }
 
         File file = new File(parentPath + File.separator + filename);
@@ -41,7 +41,7 @@ public class FileCreation {
      */
     public static void createDirectory(String parentPath, String... paths) throws IOException{
         if(!new File(parentPath).isDirectory()){
-            throw new IOException("The path doesn't exist!");
+            throw new IOException("The path doesn't branchExist!");
         }
         String path = parentPath;
         FileDeletion.deleteFile(path + File.separator + paths[0]);
@@ -57,16 +57,17 @@ public class FileCreation {
      * @param parentTree
      * @throws IOException
      */
-/*    public static void recoverWorkTree(Tree t, String parentTree) throws Exception {
+    public static void recoverWorkTree(Tree t, String parentTree) throws Exception {
         ArrayList<String> list = FileReader.readByBufferReader(t.getValue());
         ArrayList<GitObject> treeList = t.getTreeList();
         for(int i = 0; i < list.size(); i++){
 
             if(FileReader.readObjectFmt(list.get(i)).equals("blob")){
                 //读取blob的key
-                Blob blob = new Blob(FileReader.readObjectKey(list.get(i)),1);
+                Blob blob = new Blob(FileReader.readObjectKey(list.get(i)));
                 String fileName = FileReader.readObjectFileName(list.get(i));
                 createFile(parentTree, fileName, blob.getValue());
+                System.out.println("+"+fileName);
             }
             else{
                 //读取tree的key
@@ -76,5 +77,5 @@ public class FileCreation {
                 recoverWorkTree(tree, parentTree + File.separator + dirName);
             }
         }
-    }*/
+    }
 }

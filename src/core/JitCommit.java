@@ -1,5 +1,6 @@
 package core;
 
+import branch.Branch;
 import gitobject.*;
 
 import tmp.*;
@@ -10,13 +11,11 @@ import java.io.IOException;
 import java.util.*;
 
 public class JitCommit {
-    /**
-     * Creating commit and write it to repository.
-     * @throws Exception
-     */
+
+    //创建commit对象并保存到repository，并且把commit的key写入branch文件
     public void commit() throws Exception {
         Tree tree = buildTree();
-        String author = System.getProperty("user.name") + " " + String.valueOf(new Date().getTime());
+        String author = System.getProperty("user.name") + " " + String.valueOf(new Date().toString());
         String committer = System.getProperty("user.name");
 
         System.out.println("Please enter the commit message: ");
@@ -24,13 +23,32 @@ public class JitCommit {
         String message = sc.nextLine();
 
         Commit commit = new Commit(tree, author, committer, message);
-		Index index = new Index();
-		//提交完成后，删除index文件
-		index.clear();
-        //updateBranch(commit);
-        //sc.close();
+		//Index index = new Index();
+		//index.clear();
+
+        updateBranch(commit);
     }
-    
+
+    //SwingJIT专用的方法，传入自定义的提交信息，其余步骤和上一个方法一致
+	public void commit(String message) throws Exception {
+		Tree tree = buildTree();
+		String author = System.getProperty("user.name") + " " + String.valueOf(new Date().toString());
+		String committer = System.getProperty("user.name");
+		Commit commit = new Commit(tree, author, committer, message);
+		//Index index = new Index();
+		//index.clear();
+		updateBranch(commit);
+	}
+
+	//更新branch，把commit key信息写入refs/heads中
+	public void updateBranch(Commit commit) throws IOException {
+		String commitKey = commit.getKey();
+		//得到当前的branch，该路径位于.jit文件夹中的HEAD文件中
+		Branch branch = JitBranch.getBranch();
+		//分为两步，第一步修改branch对象的commitkey，第二步把commitkey写入到branch文件中
+		branch.resetCommit(commitKey);
+	}
+
 
     //从现有的index文件中创建indexTree对象
     public TreeMap<String, ObjectNode> buildIndexTree() throws IOException {
