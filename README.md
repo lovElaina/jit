@@ -1,7 +1,7 @@
 # jit
 A lightweight git application developed using java
 
-####Referring to the principle of git implementation, a version control system is implemented in Java and named jit. It can be seen as a simplified version of git. Compared with git, it retains the core feature set. Similar to the original release version of git, **we have not implemented functions such as git pull and git push that require network connection.**
+#### Referring to the principle of git implementation, a version control system is implemented in Java and named jit. It can be seen as a simplified version of git. Compared with git, it retains the core feature set. Similar to the original release version of git, **we have not implemented functions such as git pull and git push that require network connection.**
 
 - The project follows a unified programming style as well as an annotation style.
   
