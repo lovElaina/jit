@@ -1,6 +1,8 @@
 # jit
 ### A lightweight git application developed using java
 
+### please visit http://aemon.cn/2022/04/12/JIT-%E4%BD%BF%E7%94%A8JAVA%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84Git/ for more information.
+
 Referring to the principle of git implementation, a version control system is implemented in Java and named jit. It can be seen as a simplified version of git. Compared with git, it retains the core feature set. Similar to the original release version of git, **we have not implemented functions such as git pull and git push that require network connection.**
 
 - The project follows a unified programming style as well as an annotation style.
